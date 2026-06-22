@@ -4,547 +4,494 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>예사장 Vision Board</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --cream: #EFE7DA;
-  --peri: #D9DCEC;
-  --navy: #262C8E;
-  --red: #E0481E;
-  --ink: #1A1B33;
-  --muted: #8A8270;
-  --card: #FBF8F2;
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --r-card: 24px;
-  --r-pill: 100px;
+:root{
+  --cream:#EFE7DA; --peri:#D9DCEC; --navy:#262C8E;
+  --red:#E0481E; --ink:#1A1B33; --muted:#8A8270; --card:#FBF8F2;
+  --r:24px; --pill:100px;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { font-family: 'Pretendard', -apple-system, sans-serif; background: var(--cream); color: var(--ink); line-height: 1.6; overflow-x: hidden; }
-
-/* EDIT MODE */
-body.edit-mode [contenteditable="true"] { outline: 2px dashed var(--red); outline-offset: 3px; border-radius: 4px; cursor: text; min-height: 1em; }
-body.edit-mode [contenteditable="true"]:focus { outline: 2px solid var(--red); background: rgba(224,72,30,0.04); }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Pretendard Variable','Pretendard',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;line-height:1.6;}
 
 /* NAV */
-nav { position: fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:14px 32px; background:rgba(239,231,218,0.9); backdrop-filter:blur(14px); border-bottom:1px solid rgba(26,27,51,0.08); }
-.nav-logo { font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; letter-spacing:-0.5px; }
-.nav-logo span { color:var(--red); }
-.nav-right { display:flex; align-items:center; gap:14px; }
-.streak { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted); }
-.streak strong { color:var(--navy); }
-.btn { padding:8px 20px; border-radius:var(--r-pill); font-family:'Pretendard',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s var(--ease); }
-.btn-edit { border:1.5px solid var(--ink); background:transparent; color:var(--ink); }
-.btn-edit:hover { background:var(--ink); color:var(--cream); }
-.btn-save { border:none; background:var(--red); color:#fff; display:none; }
-body.edit-mode .btn-save { display:block; }
-body.edit-mode .btn-edit { color:var(--muted); border-color:var(--muted); }
+nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(239,231,218,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(26,27,51,0.09);}
+.logo{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;letter-spacing:-0.4px;}
+.logo em{color:var(--red);font-style:normal;}
+.nav-r{display:flex;align-items:center;gap:12px;}
+.streak{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);}
+.streak b{color:var(--navy);}
+.btn{padding:8px 18px;border-radius:var(--pill);font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;}
+.btn-e{background:transparent;border:1.5px solid var(--ink);color:var(--ink);}
+.btn-e:hover{background:var(--ink);color:var(--cream);}
+.btn-s{background:var(--red);border:none;color:#fff;display:none;}
+body.em .btn-s{display:block;}
+body.em .btn-e{color:var(--muted);border-color:var(--muted);}
+body.em [data-k]{outline:2px dashed rgba(224,72,30,.5);outline-offset:2px;border-radius:3px;cursor:text;}
+body.em [data-k]:focus{outline-color:var(--red);background:rgba(224,72,30,.04);}
 
-/* HERO */
-.hero { min-height:92vh; display:flex; align-items:center; padding:100px 32px 72px; position:relative; }
-.hero-inner { max-width:1100px; margin:0 auto; width:100%; }
-.hero-eyebrow { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:28px; }
-.hero-h1 { font-family:'Space Grotesk',sans-serif; font-size:clamp(40px,7.5vw,84px); font-weight:700; line-height:1.05; letter-spacing:-0.03em; margin-bottom:32px; }
-.hero-h1 .accent { color:var(--red); }
-.hero-h1 .blue { color:var(--navy); }
-.hero-mission { font-size:clamp(16px,2vw,20px); color:var(--muted); max-width:620px; line-height:1.75; margin-bottom:52px; }
-.dday-row { display:flex; flex-wrap:wrap; gap:14px; }
-.dday-chip { padding:14px 24px; border-radius:var(--r-pill); background:var(--navy); color:#fff; }
-.dday-chip.accent { background:var(--red); }
-.chip-label { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; opacity:0.65; display:block; }
-.chip-num { font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:700; line-height:1.1; display:block; }
-.chip-sub { font-size:12px; opacity:0.65; display:block; }
-.scroll-cue { position:absolute; bottom:28px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:6px; color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; animation:bob 2s ease infinite; }
-@keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
-
-/* MARQUEE */
-.marquee-wrap { overflow:hidden; background:var(--navy); border-top:1px solid rgba(255,255,255,0.08); border-bottom:1px solid rgba(255,255,255,0.08); }
-.marquee-track { display:flex; white-space:nowrap; animation:marquee 28s linear infinite; padding:18px 0; }
-.marquee-track:hover { animation-play-state:paused; }
-.marquee-item { display:inline-flex; align-items:center; gap:20px; padding-right:48px; font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:500; color:rgba(255,255,255,0.85); letter-spacing:0.02em; }
-.marquee-dot { color:var(--red); }
-@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-/* DAILY */
-.daily { background:var(--peri); padding:80px 32px; text-align:center; }
-.daily-date { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:24px; }
-.daily-quote { font-family:'Space Grotesk',sans-serif; font-size:clamp(22px,4vw,42px); font-weight:700; letter-spacing:-0.02em; line-height:1.3; max-width:820px; margin:0 auto 20px; }
-.daily-quote em { color:var(--red); font-style:normal; }
-.daily-src { font-size:14px; color:var(--muted); }
-
-/* SECTION COMMON */
-section { padding:80px 32px; }
-.s-tag { display:inline-flex; align-items:center; gap:6px; padding:6px 16px; border-radius:var(--r-pill); border:1px solid currentColor; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:40px; }
-.s-inner { max-width:1100px; margin:0 auto; }
-.s-title { font-family:'Space Grotesk',sans-serif; font-size:clamp(28px,4.5vw,52px); font-weight:700; letter-spacing:-0.03em; margin-bottom:48px; }
-
-/* NUMBERS */
-.num-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
-.num-card { background:var(--card); border-radius:var(--r-card); padding:32px; position:relative; overflow:hidden; transition:transform 0.3s var(--ease),box-shadow 0.3s var(--ease); }
-.num-card:hover { transform:translateY(-6px); box-shadow:0 20px 48px rgba(26,27,51,0.13); }
-.num-card::after { content:''; position:absolute; top:0;left:0;right:0; height:3px; background:var(--red); }
-.num-card.blue::after { background:var(--navy); }
-.num-label { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; }
-.num-val { font-family:'Space Grotesk',sans-serif; font-size:56px; font-weight:700; line-height:1; margin-bottom:6px; }
-.num-unit { font-size:22px; color:var(--muted); }
-.num-sub { font-size:14px; color:var(--muted); margin-top:8px; }
-
-/* ROADMAP */
-.roadmap-section { background:var(--navy); color:#fff; }
-.roadmap-section .s-tag { color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.25); }
-.roadmap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-.rm-card { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:var(--r-card); padding:28px; transition:background 0.3s var(--ease),transform 0.3s var(--ease); }
-.rm-card:hover { background:rgba(255,255,255,0.1); transform:translateY(-4px); }
-.rm-card.now { background:var(--red); border-color:var(--red); }
-.rm-age { font-family:'Space Grotesk',sans-serif; font-size:52px; font-weight:700; opacity:0.12; line-height:1; margin-bottom:10px; }
-.rm-card.now .rm-age { opacity:0.35; }
-.rm-year { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; opacity:0.55; text-transform:uppercase; margin-bottom:8px; }
-.rm-theme { font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-bottom:14px; }
-.rm-actions { font-size:14px; line-height:1.75; opacity:0.8; }
-.rm-axis { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.07em; margin-top:14px; opacity:0.45; }
+/* NOW BLOCK */
+.now-block{background:var(--navy);color:#fff;padding:32px 28px;}
+.now-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;}
+.now-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.55;margin-bottom:6px;}
+.now-task{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,3.5vw,38px);font-weight:700;line-height:1.2;}
+.now-task em{color:var(--red);font-style:normal;}
+.now-time{font-family:'JetBrains Mono',monospace;font-size:clamp(32px,5vw,56px);font-weight:500;opacity:.9;text-align:right;white-space:nowrap;}
+@media(max-width:600px){.now-inner{grid-template-columns:1fr;}.now-time{text-align:left;font-size:32px;}}
 
 /* SCHEDULE */
-.sch-grid { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
-.sch-block { background:var(--card); border-radius:var(--r-card); padding:36px; }
-.block-title { font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; margin-bottom:24px; }
-.sch-row { display:flex; gap:16px; padding:11px 0; border-bottom:1px solid rgba(26,27,51,0.06); }
-.sch-row:last-child { border-bottom:none; }
-.sch-time { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); min-width:96px; padding-top:2px; }
-.sch-task { font-size:14px; line-height:1.5; }
-.sch-badge { display:inline-block; padding:2px 9px; border-radius:var(--r-pill); background:var(--navy); color:#fff; font-family:'JetBrains Mono',monospace; font-size:10px; margin-left:6px; }
-.wd-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:24px; }
-.wd-card { background:var(--cream); border-radius:16px; padding:14px 10px; text-align:center; }
-.wd-card.today { background:var(--red); color:#fff; }
-.wd-day { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.07em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
-.wd-card.today .wd-day { color:rgba(255,255,255,0.75); }
-.wd-task { font-size:12px; line-height:1.5; color:var(--ink); }
-.wd-card.today .wd-task { color:#fff; }
-.min-line { padding:18px 20px; background:rgba(224,72,30,0.07); border-radius:16px; border-left:3px solid var(--red); }
-.min-label { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.08em; color:var(--red); text-transform:uppercase; margin-bottom:6px; }
-.min-text { font-size:14px; line-height:1.8; }
+.sch-section{padding:48px 28px;background:var(--card);}
+.sch-inner{max-width:1100px;margin:0 auto;}
+.sec-tag{display:inline-block;padding:5px 14px;border-radius:var(--pill);border:1px solid var(--ink);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px;}
+.sch-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.sch-box{background:var(--cream);border-radius:var(--r);padding:28px;}
+.box-title{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px;}
+.sch-rows{display:block;}
+.row{display:flex;gap:14px;padding:10px 12px;border-radius:12px;margin-bottom:4px;transition:background .15s;}
+.row.active{background:var(--red);color:#fff;}
+.row.active .t{color:rgba(255,255,255,.7);}
+.row.active .badge{background:rgba(255,255,255,.25);color:#fff;}
+.row.past .t,.row.past .task{opacity:.4;}
+.t{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);min-width:90px;padding-top:2px;flex-shrink:0;}
+.task{font-size:14px;line-height:1.5;}
+.badge{display:inline-block;padding:1px 8px;border-radius:var(--pill);background:var(--navy);color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;margin-left:6px;}
+/* weekday */
+.wd{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px;}
+.wdc{background:var(--card);border-radius:14px;padding:12px 8px;text-align:center;}
+.wdc.td{background:var(--red);color:#fff;}
+.wdn{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.wdc.td .wdn{color:rgba(255,255,255,.7);}
+.wdt{font-size:12px;line-height:1.5;color:var(--ink);}
+.wdc.td .wdt{color:#fff;}
+.minbox{padding:16px 18px;background:rgba(224,72,30,.08);border-radius:14px;border-left:3px solid var(--red);}
+.min-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--red);text-transform:uppercase;margin-bottom:5px;}
+.min-txt{font-size:13px;line-height:1.8;}
+@media(max-width:700px){.sch-grid{grid-template-columns:1fr;}.wd{grid-template-columns:repeat(4,1fr);}}
+
+/* HERO (compact) */
+.hero{padding:60px 28px;background:var(--cream);}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+.h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,5vw,60px);font-weight:700;line-height:1.1;letter-spacing:-.03em;margin-bottom:20px;}
+.h1 em{color:var(--red);font-style:normal;}
+.h1 b{color:var(--navy);}
+.mission{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:28px;}
+.ddays{display:flex;flex-direction:column;gap:10px;}
+.dc{padding:14px 20px;border-radius:var(--r);background:var(--navy);color:#fff;}
+.dc.r{background:var(--red);}
+.dcl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin-bottom:2px;}
+.dcn{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;line-height:1;}
+.dcs{font-size:12px;opacity:.65;margin-top:2px;}
+@media(max-width:700px){.hero-inner{grid-template-columns:1fr;}.ddays{flex-direction:row;flex-wrap:wrap;}}
+
+/* MARQUEE */
+.mq{overflow:hidden;background:var(--navy);padding:16px 0;}
+.mq-t{display:flex;white-space:nowrap;animation:mq 26s linear infinite;}
+.mq-t:hover{animation-play-state:paused;}
+.mq-i{display:inline-flex;align-items:center;gap:18px;padding-right:40px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:500;color:rgba(255,255,255,.85);}
+.mq-d{color:var(--red);}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* DAILY */
+.daily{background:var(--peri);padding:56px 28px;text-align:center;}
+.daily-d{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
+.daily-q{font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.5vw,38px);font-weight:700;letter-spacing:-.02em;line-height:1.3;max-width:780px;margin:0 auto 16px;}
+.daily-s{font-size:13px;color:var(--muted);}
+
+/* ROADMAP */
+.rm-sec{background:var(--navy);color:#fff;padding:64px 28px;}
+.rm-sec .sec-tag{color:rgba(255,255,255,.55);border-color:rgba(255,255,255,.2);}
+.sec-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,4vw,48px);font-weight:700;letter-spacing:-.03em;margin-bottom:40px;}
+.rm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1100px;margin:0 auto;}
+.rm-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);padding:24px;transition:background .2s,transform .2s;}
+.rm-card:hover{background:rgba(255,255,255,.11);transform:translateY(-3px);}
+.rm-card.now{background:var(--red);border-color:var(--red);}
+.rm-age{font-family:'Space Grotesk',sans-serif;font-size:48px;font-weight:700;opacity:.12;line-height:1;margin-bottom:8px;}
+.rm-card.now .rm-age{opacity:.35;}
+.rm-yr{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.5;text-transform:uppercase;margin-bottom:6px;}
+.rm-th{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:10px;}
+.rm-ac{font-size:13px;line-height:1.7;opacity:.8;}
+.rm-ax{font-family:'JetBrains Mono',monospace;font-size:10px;margin-top:12px;opacity:.4;}
+@media(max-width:700px){.rm-grid{grid-template-columns:1fr;}}
 
 /* PIPELINE */
-.pipeline-section { background:var(--peri); }
-.pl-list { max-width:780px; margin:0 auto; }
-.pl-item { display:flex; align-items:flex-start; gap:24px; padding:26px 0; border-bottom:1px solid rgba(26,27,51,0.09); }
-.pl-item:last-child { border-bottom:none; }
-.pl-num { font-family:'Space Grotesk',sans-serif; font-size:48px; font-weight:700; color:rgba(26,27,51,0.1); line-height:1; min-width:56px; }
-.pl-item.on .pl-num { color:var(--red); }
-.pl-name { font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-bottom:4px; }
-.pl-desc { font-size:14px; color:var(--muted); margin-bottom:8px; }
-.pl-tag { display:inline-block; padding:3px 12px; border-radius:var(--r-pill); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.07em; }
-.pl-tag.on { background:var(--red); color:#fff; }
-.pl-tag.off { border:1px solid var(--muted); color:var(--muted); }
+.pl-sec{padding:64px 28px;background:var(--peri);}
+.pl-list{max-width:740px;margin:0 auto;}
+.pl-row{display:flex;gap:20px;align-items:flex-start;padding:22px 0;border-bottom:1px solid rgba(26,27,51,.09);}
+.pl-row:last-child{border:none;}
+.pl-n{font-family:'Space Grotesk',sans-serif;font-size:44px;font-weight:700;color:rgba(26,27,51,.1);line-height:1;min-width:52px;}
+.pl-row.on .pl-n{color:var(--red);}
+.pl-nm{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:3px;}
+.pl-d{font-size:14px;color:var(--muted);margin-bottom:6px;}
+.pl-tag{display:inline-block;padding:2px 10px;border-radius:var(--pill);font-family:'JetBrains Mono',monospace;font-size:10px;}
+.pl-tag.on{background:var(--red);color:#fff;}
+.pl-tag.off{border:1px solid var(--muted);color:var(--muted);}
 
 /* WISDOM */
-.wis-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:20px; }
-.wis-card { background:var(--card); border-radius:var(--r-card); padding:32px; transition:transform 0.3s var(--ease),box-shadow 0.3s var(--ease); }
-.wis-card:hover { transform:translateY(-6px); box-shadow:0 20px 48px rgba(26,27,51,0.1); }
-.wis-num { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); letter-spacing:0.1em; margin-bottom:14px; }
-.wis-head { font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; margin-bottom:12px; }
-.wis-body { font-size:15px; color:var(--muted); line-height:1.75; }
-.wis-impact { margin-top:16px; padding-top:14px; border-top:1px solid rgba(26,27,51,0.07); font-size:13px; color:var(--navy); font-weight:600; }
+.wis-sec{padding:64px 28px;}
+.wis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:1100px;margin:0 auto;}
+.wis-card{background:var(--card);border-radius:var(--r);padding:28px;transition:transform .2s,box-shadow .2s;}
+.wis-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(26,27,51,.1);}
+.wis-n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red);letter-spacing:.1em;margin-bottom:12px;}
+.wis-h{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;margin-bottom:10px;}
+.wis-b{font-size:14px;color:var(--muted);line-height:1.75;}
+.wis-i{margin-top:14px;padding-top:12px;border-top:1px solid rgba(26,27,51,.07);font-size:13px;color:var(--navy);font-weight:600;}
 
 /* FOOTER */
-footer { background:var(--ink); color:#fff; padding:64px 32px; text-align:center; }
-.footer-mission { font-family:'Space Grotesk',sans-serif; font-size:clamp(18px,3vw,30px); font-weight:700; letter-spacing:-0.02em; max-width:700px; margin:0 auto 24px; line-height:1.4; }
-.footer-mission span { color:var(--red); }
-.footer-meta { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.07em; color:rgba(255,255,255,0.35); }
+footer{background:var(--ink);color:#fff;padding:56px 28px;text-align:center;}
+.ft-m{font-family:'Space Grotesk',sans-serif;font-size:clamp(17px,2.5vw,26px);font-weight:700;letter-spacing:-.02em;max-width:640px;margin:0 auto 18px;line-height:1.45;}
+.ft-m em{color:var(--red);font-style:normal;}
+.ft-sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.07em;color:rgba(255,255,255,.3);}
 
-/* SCROLL REVEAL */
-.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.75s var(--ease),transform 0.75s var(--ease); }
-.reveal.in { opacity:1; transform:translateY(0); }
-.d1{transition-delay:0.1s} .d2{transition-delay:0.2s} .d3{transition-delay:0.3s} .d4{transition-delay:0.4s} .d5{transition-delay:0.5s}
+/* NUMS */
+.num-sec{padding:64px 28px;}
+.num-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;max-width:1100px;margin:0 auto;}
+.nc{background:var(--card);border-radius:var(--r);padding:28px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.nc:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(26,27,51,.12);}
+.nc::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--red);}
+.nc.b::after{background:var(--navy);}
+.nc-l{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.nc-v{font-family:'Space Grotesk',sans-serif;font-size:50px;font-weight:700;line-height:1;margin-bottom:6px;}
+.nc-u{font-size:20px;color:var(--muted);}
+.nc-s{font-size:13px;color:var(--muted);}
 
-/* RESPONSIVE */
-@media(max-width:768px){
-  nav{padding:12px 18px;}
-  .streak{display:none;}
-  section{padding:60px 20px;}
-  .hero{padding:90px 20px 64px;}
-  .roadmap-grid{grid-template-columns:1fr;}
-  .sch-grid{grid-template-columns:1fr;}
-  .wd-grid{grid-template-columns:repeat(4,1fr);}
-  .btn{padding:7px 14px;font-size:13px;}
-}
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeUp .7s cubic-bezier(.16,1,.3,1) both;}
+.a1{animation-delay:.05s}.a2{animation-delay:.15s}.a3{animation-delay:.25s}.a4{animation-delay:.35s}.a5{animation-delay:.45s}
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <div class="nav-logo"><span>예</span>사장 Vision</div>
-  <div class="nav-right">
-    <div class="streak">🔥 연속 <strong id="streakNum">0</strong>일</div>
-    <button class="btn btn-edit" id="editBtn" onclick="toggleEdit()">✏️ 편집</button>
-    <button class="btn btn-save" onclick="saveAll()">저장 ✓</button>
+  <div class="logo"><em>예</em>사장 Vision</div>
+  <div class="nav-r">
+    <div class="streak">🔥 <b id="sNum">0</b>일 연속</div>
+    <button class="btn btn-e" id="eBtn" onclick="toggleEdit()">✏️ 편집</button>
+    <button class="btn btn-s" onclick="saveAll()">저장 ✓</button>
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-eyebrow">YEJI BYUN · @yeah_ceo · Vision Board 2026–2031</div>
-    <h1 class="hero-h1">
-      <span data-key="v1">34세 변예지의 비전은</span><br>
-      <span class="accent" data-key="v2">연매출 10억</span>
-      <span class="blue" data-key="v3"> CEO가 된다.</span>
-    </h1>
-    <p class="hero-mission" data-key="mission">나 변예지의 사명은 1인 사업으로 성공하고 싶은 2030에게 열정, 전략, 사랑을 바탕으로 월천 버는 것을 돕기 위해 존재한다.</p>
-    <div class="dday-row">
-      <div class="dday-chip accent">
-        <span class="chip-label">D-DAY</span>
-        <span class="chip-num" id="dd1">…</span>
-        <span class="chip-sub">월천 달성까지</span>
+<!-- 지금 이 순간 -->
+<div class="now-block">
+  <div class="now-inner">
+    <div>
+      <div class="now-label">지금 이 순간 · 오늘의 원씽</div>
+      <div class="now-task" id="nowTask">로딩 중…</div>
+    </div>
+    <div class="now-time" id="nowClock">00:00</div>
+  </div>
+</div>
+
+<!-- 스케줄 (메인) -->
+<section class="sch-section">
+  <div class="sch-inner">
+    <div class="sec-tag">⏰ 나의 하루</div>
+    <div class="sch-grid">
+
+      <div class="sch-box">
+        <div class="box-title">평일 루틴</div>
+        <div class="sch-rows" id="rows">
+          <!-- JS로 렌더 -->
+        </div>
       </div>
-      <div class="dday-chip">
-        <span class="chip-label">D-DAY</span>
-        <span class="chip-num" id="dd2">…</span>
-        <span class="chip-sub">전업 전환까지</span>
+
+      <div class="sch-box">
+        <div class="box-title">요일별 원씽</div>
+        <div class="wd" id="wdGrid"></div>
+        <div class="minbox">
+          <div class="min-lbl">지친 날 최소선</div>
+          <div class="min-txt" data-k="minline">기도 3분 · 경사 20분 · 콘텐츠 메모 1개 · 감사 1줄<br>무너진 게 아니라 방어한 날.</div>
+        </div>
       </div>
-      <div class="dday-chip">
-        <span class="chip-label">D-DAY</span>
-        <span class="chip-num" id="dd3">…</span>
-        <span class="chip-sub">연 10억까지</span>
-      </div>
+
     </div>
   </div>
-  <div class="scroll-cue"><span>↓</span><span>SCROLL</span></div>
 </section>
 
 <!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track" id="mTrack"></div>
+<div class="mq"><div class="mq-t" id="mqT"></div></div>
+
+<!-- 비전·사명 (HERO) -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="h1">
+        <span data-k="v1">34세 변예지의 비전은</span><br>
+        <em data-k="v2">연매출 10억</em>
+        <b data-k="v3"> CEO가 된다.</b>
+      </div>
+      <p class="mission" data-k="mission">나 변예지의 사명은 1인 사업으로 성공하고 싶은 2030에게 열정, 전략, 사랑을 바탕으로 월천 버는 것을 돕기 위해 존재한다.</p>
+    </div>
+    <div class="ddays">
+      <div class="dc r"><div class="dcl">D-DAY 월천까지</div><div class="dcn" id="dd1">…</div><div class="dcs">2027년 하반기</div></div>
+      <div class="dc"><div class="dcl">D-DAY 전업까지</div><div class="dcn" id="dd2">…</div><div class="dcs">2028년 7월</div></div>
+      <div class="dc"><div class="dcl">D-DAY 연10억까지</div><div class="dcn" id="dd3">…</div><div class="dcs">2031년</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 오늘의 한 줄 -->
+<div class="daily">
+  <div class="daily-d" id="dDate"></div>
+  <div class="daily-q" id="dQ"></div>
+  <div class="daily-s" id="dS"></div>
 </div>
 
-<!-- DAILY LINE -->
-<div class="daily reveal">
-  <div class="daily-date" id="dDate"></div>
-  <div class="daily-quote" id="dQuote"></div>
-  <div class="daily-src" id="dSrc"></div>
-</div>
+<!-- 숫자들 -->
+<section class="num-sec">
+  <div class="sec-tag anim">📊 지금 나는</div>
+  <div class="num-grid">
+    <div class="nc anim a1"><div class="nc-l">인스타 팔로워</div><div class="nc-v"><span class="cu" data-t="8000">0</span></div><div class="nc-s" data-k="n1">→ 목표: 100,000명</div></div>
+    <div class="nc b anim a2"><div class="nc-l">현재 월수익</div><div class="nc-v"><span class="cu" data-t="50">0</span><span class="nc-u">만</span></div><div class="nc-s" data-k="n2">→ 목표: 1,000만원</div></div>
+    <div class="nc anim a3"><div class="nc-l">챌린지 멤버</div><div class="nc-v"><span class="cu" data-t="10">0</span><span class="nc-u">명</span></div><div class="nc-s" data-k="n3">사업 스타터 챌린지</div></div>
+    <div class="nc anim a4"><div class="nc-l">비전까지</div><div class="nc-v" style="font-size:34px;padding-top:10px;" data-k="n4">5년</div><div class="nc-s" data-k="n5">2031년 · 34세 연10억 CEO</div></div>
+  </div>
+</section>
 
-<!-- NUMBERS -->
-<section>
-  <div class="s-inner">
-    <div class="s-tag reveal">📊 지금 나는</div>
-    <div class="num-grid">
-      <div class="num-card reveal d1">
-        <div class="num-label">인스타 팔로워</div>
-        <div class="num-val"><span class="cu" data-target="8000">8,000</span></div>
-        <div class="num-sub" data-key="n1sub">→ 목표: 100,000명</div>
+<!-- 로드맵 -->
+<section class="rm-sec">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="sec-tag">🗺 Roadmap</div>
+    <div class="sec-title">29 → 34, <span style="color:var(--red)">단계별 그림</span></div>
+    <div class="rm-grid">
+      <div class="rm-card now">
+        <div class="rm-age">29</div><div class="rm-yr">2026 H2 · 지금 여기</div>
+        <div class="rm-th" data-k="rm29t">엔진 만들기</div>
+        <div class="rm-ac" data-k="rm29a">챌린지→멤버십 론칭 / 청중 키우기 / 콘텐츠 시스템화 / AI 장착</div>
+        <div class="rm-ax">축 ④ 누가>무엇 · ⑤ AI</div>
       </div>
-      <div class="num-card blue reveal d2">
-        <div class="num-label">현재 월수익</div>
-        <div class="num-val"><span class="cu" data-target="50">50</span><span class="num-unit">만</span></div>
-        <div class="num-sub" data-key="n2sub">→ 목표: 1,000만원</div>
+      <div class="rm-card">
+        <div class="rm-age">30</div><div class="rm-yr">2027</div>
+        <div class="rm-th" data-k="rm30t">월천 달성</div>
+        <div class="rm-ac" data-k="rm30a">멤버십+디지털상품 안착 → 하반기 월 1,000만 / 회사 병행</div>
+        <div class="rm-ax">축 ② 하나에 집중 · ④ 서사</div>
       </div>
-      <div class="num-card reveal d3">
-        <div class="num-label">챌린지 멤버</div>
-        <div class="num-val"><span class="cu" data-target="10">10</span><span class="num-unit">명</span></div>
-        <div class="num-sub" data-key="n3sub">사업 스타터 챌린지</div>
+      <div class="rm-card">
+        <div class="rm-age">31</div><div class="rm-yr">2028</div>
+        <div class="rm-th" data-k="rm31t">전업 전환</div>
+        <div class="rm-ac" data-k="rm31a">계약 종료(7월) → 전업 / 강의 론칭 / 자동화·외주(직원0) / 박사 준비</div>
+        <div class="rm-ax">축 ⑤ 자동화·AI</div>
       </div>
-      <div class="num-card reveal d4">
-        <div class="num-label">목표까지</div>
-        <div class="num-val" style="font-size:38px;padding-top:10px;" data-key="n4val">5년 남았다</div>
-        <div class="num-sub" data-key="n4sub">2031년 · 34세 연 10억 CEO</div>
+      <div class="rm-card">
+        <div class="rm-age">32</div><div class="rm-yr">2029</div>
+        <div class="rm-th" data-k="rm32t">스케일</div>
+        <div class="rm-ac" data-k="rm32a">고티켓+다채널 / 연 3~5억 / AI·외주 시스템 / 박사 진입</div>
+        <div class="rm-ax">축 ⑤ 레버리지</div>
+      </div>
+      <div class="rm-card">
+        <div class="rm-age">33</div><div class="rm-yr">2030</div>
+        <div class="rm-th" data-k="rm33t">확장</div>
+        <div class="rm-ac" data-k="rm33a">브랜드 파워·자동화 심화 / 연 5~8억</div>
+        <div class="rm-ax">축 ④⑤ 브랜드·AI</div>
+      </div>
+      <div class="rm-card">
+        <div class="rm-age">34</div><div class="rm-yr">2031 · 비전 달성</div>
+        <div class="rm-th" data-k="rm34t">연 10억 CEO</div>
+        <div class="rm-ac" data-k="rm34a">직원 없이, 제품·시스템·AI로 / 라이프스타일 1인 기업 = 일상의 주인</div>
+        <div class="rm-ax">축 ① 일상이 목적 · ⑤ 시스템</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ROADMAP -->
-<section class="roadmap-section">
-  <div class="s-inner">
-    <div class="s-tag reveal">🗺 Roadmap</div>
-    <div class="s-title reveal" style="color:#fff;">29 → 34, <span style="color:var(--red)">단계별 그림</span></div>
-    <div class="roadmap-grid">
-      <div class="rm-card now reveal d1">
-        <div class="rm-age">29</div>
-        <div class="rm-year">2026 H2 · 지금 여기</div>
-        <div class="rm-theme" data-key="rm29t">엔진 만들기</div>
-        <div class="rm-actions" data-key="rm29a">챌린지→멤버십 론칭 / 청중 키우기 / 콘텐츠 시스템화 / AI 장착</div>
-        <div class="rm-axis">축 ④ 누가>무엇 · ⑤ AI 레버리지</div>
-      </div>
-      <div class="rm-card reveal d2">
-        <div class="rm-age">30</div>
-        <div class="rm-year">2027</div>
-        <div class="rm-theme" data-key="rm30t">월천 달성</div>
-        <div class="rm-actions" data-key="rm30a">멤버십+디지털상품 안착 → 하반기 월 1,000만 / 회사 병행(안전망)</div>
-        <div class="rm-axis">축 ② 하나에 집중 · ④ 서사</div>
-      </div>
-      <div class="rm-card reveal d3">
-        <div class="rm-age">31</div>
-        <div class="rm-year">2028</div>
-        <div class="rm-theme" data-key="rm31t">전업 전환</div>
-        <div class="rm-actions" data-key="rm31a">계약 종료(7월) → 전업 / 강의 론칭 / 자동화·외주(직원0) / 박사 준비</div>
-        <div class="rm-axis">축 ⑤ 자동화·AI</div>
-      </div>
-      <div class="rm-card reveal d1">
-        <div class="rm-age">32</div>
-        <div class="rm-year">2029</div>
-        <div class="rm-theme" data-key="rm32t">스케일</div>
-        <div class="rm-actions" data-key="rm32a">고티켓+다채널 / 연 3~5억 / AI·외주 시스템 / 박사 진입</div>
-        <div class="rm-axis">축 ⑤ 레버리지</div>
-      </div>
-      <div class="rm-card reveal d2">
-        <div class="rm-age">33</div>
-        <div class="rm-year">2030</div>
-        <div class="rm-theme" data-key="rm33t">확장</div>
-        <div class="rm-actions" data-key="rm33a">브랜드 파워·자동화 심화 / 연 5~8억</div>
-        <div class="rm-axis">축 ④⑤ 브랜드·AI</div>
-      </div>
-      <div class="rm-card reveal d3">
-        <div class="rm-age">34</div>
-        <div class="rm-year">2031 · 비전 달성</div>
-        <div class="rm-theme" data-key="rm34t">연 10억 CEO</div>
-        <div class="rm-actions" data-key="rm34a">직원 없이, 제품·시스템·AI로 / 라이프스타일 1인 기업 = 일상의 주인</div>
-        <div class="rm-axis">축 ① 일상이 목적 · ⑤ 시스템</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SCHEDULE -->
-<section>
-  <div class="s-inner">
-    <div class="s-tag reveal">⏰ 나의 하루</div>
-    <div class="sch-grid">
-      <div class="sch-block reveal d1">
-        <div class="block-title">평일 루틴</div>
-        <div class="sch-row"><div class="sch-time">05:20</div><div class="sch-task" data-key="s1">기상 · 기도 5분</div></div>
-        <div class="sch-row"><div class="sch-time">05:25–05:40</div><div class="sch-task" data-key="s2">근력 15분 <span class="sch-badge">체력=그릇</span></div></div>
-        <div class="sch-row"><div class="sch-time">05:40–06:25</div><div class="sch-task" data-key="s3">씻기·단장 (전날 세팅으로 결정피로↓)</div></div>
-        <div class="sch-row"><div class="sch-time">06:25–06:30</div><div class="sch-task" data-key="s4">오늘의 원씽 1개만 정함 <span class="sch-badge">②</span></div></div>
-        <div class="sch-row"><div class="sch-time">06:30–07:30</div><div class="sch-task" data-key="s5">출근 — AI 선생님 활용 or 듣기 학습 <span class="sch-badge">⑤</span></div></div>
-        <div class="sch-row"><div class="sch-time">07:30–08:00</div><div class="sch-task" data-key="s6">회사 도착 — 비전·사명 3회 + 미래작업 30분</div></div>
-        <div class="sch-row"><div class="sch-time">08:00–17:00</div><div class="sch-task" data-key="s7">회사 = 훔쳐배우기 (리서치·기획·브랜딩)</div></div>
-        <div class="sch-row"><div class="sch-time">17:00–18:00</div><div class="sch-task" data-key="s8">퇴근 — 회복 70% <span class="sch-badge">③</span></div></div>
-        <div class="sch-row"><div class="sch-time">18:00–18:20</div><div class="sch-task" data-key="s9">경사길 20분 (유산소+회사모드 OFF) <span class="sch-badge">①</span></div></div>
-        <div class="sch-row"><div class="sch-time">18:20–19:20</div><div class="sch-task" data-key="s10">샤워·저녁·정리</div></div>
-        <div class="sch-row"><div class="sch-time">19:20–21:00</div><div class="sch-task" data-key="s11">원씽 딥워크 100분 (요일제) <span class="sch-badge">②④⑤</span></div></div>
-        <div class="sch-row"><div class="sch-time">21:00–21:40</div><div class="sch-task" data-key="s12">일상 — 관계·정리·내일 세팅 <span class="sch-badge">①</span></div></div>
-        <div class="sch-row"><div class="sch-time">21:40–22:00</div><div class="sch-task" data-key="s13">하루 기록 5줄</div></div>
-        <div class="sch-row"><div class="sch-time">22:00–22:30</div><div class="sch-task" data-key="s14">마감·기도·취침 <span class="sch-badge">③</span></div></div>
-      </div>
-      <div class="sch-block reveal d2">
-        <div class="block-title">요일별 원씽</div>
-        <div class="wd-grid" id="wdGrid">
-          <div class="wd-card" data-d="1"><div class="wd-day">MON</div><div class="wd-task" data-key="wd1">사업 구조·판매 행동</div></div>
-          <div class="wd-card" data-d="2"><div class="wd-day">TUE</div><div class="wd-task" data-key="wd2">콘텐츠 제작 (현실+분석+서사)</div></div>
-          <div class="wd-card" data-d="3"><div class="wd-day">WED</div><div class="wd-task" data-key="wd3">챌린지 운영·고객 응대</div></div>
-          <div class="wd-card" data-d="4"><div class="wd-day">THU</div><div class="wd-task" data-key="wd4">학습·박사 인풋</div></div>
-          <div class="wd-card" data-d="5"><div class="wd-day">FRI</div><div class="wd-task" data-key="wd5">재테크 점검+관계</div></div>
-          <div class="wd-card" data-d="6"><div class="wd-day">SAT</div><div class="wd-task" data-key="wd6">릴스 촬영·편집·예약</div></div>
-          <div class="wd-card" data-d="0"><div class="wd-day">SUN</div><div class="wd-task" data-key="wd0">예배·회고·원씽 정하기</div></div>
-        </div>
-        <div class="min-line">
-          <div class="min-label">지친 날 최소선</div>
-          <div class="min-text" data-key="minline">기도 3분 · 경사 20분 · 콘텐츠 메모 1개 · 감사 1줄<br>무너진 게 아니라 방어한 날.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PIPELINE -->
-<section class="pipeline-section">
-  <div class="s-inner">
-    <div class="s-tag reveal">💰 수익 파이프라인</div>
+<!-- 파이프라인 -->
+<section class="pl-sec">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="sec-tag">💰 수익 파이프라인</div>
     <div class="pl-list">
-      <div class="pl-item on reveal d1">
-        <div class="pl-num">01</div>
-        <div>
-          <div class="pl-name" data-key="pl1n">챌린지</div>
-          <div class="pl-desc" data-key="pl1d">사업 스타터 챌린지 · 얼리버드 4.9만 / 정가 5.9만 · 월 ~10명</div>
-          <span class="pl-tag on">운영 중</span>
-        </div>
-      </div>
-      <div class="pl-item reveal d2">
-        <div class="pl-num">02</div>
-        <div>
-          <div class="pl-name" data-key="pl2n">멤버십</div>
-          <div class="pl-desc" data-key="pl2d">Next CEO Club 멤버십 · 월 구독 기반 안정 수익</div>
-          <span class="pl-tag off">론칭 예정</span>
-        </div>
-      </div>
-      <div class="pl-item reveal d3">
-        <div class="pl-num">03</div>
-        <div>
-          <div class="pl-name" data-key="pl3n">디지털 상품</div>
-          <div class="pl-desc" data-key="pl3d">노션 템플릿 · PDF 워크북 · 24시간 판매되는 자산</div>
-          <span class="pl-tag off">개발 예정</span>
-        </div>
-      </div>
-      <div class="pl-item reveal d1">
-        <div class="pl-num">04</div>
-        <div>
-          <div class="pl-name" data-key="pl4n">온라인 강의</div>
-          <div class="pl-desc" data-key="pl4d">전업 전후 론칭 · 레버리지 최대화</div>
-          <span class="pl-tag off">전업 후</span>
-        </div>
-      </div>
-      <div class="pl-item reveal d2">
-        <div class="pl-num">05</div>
-        <div>
-          <div class="pl-name" data-key="pl5n">고관여 1:1 세션</div>
-          <div class="pl-desc" data-key="pl5d">프리미엄 컨설팅 · 소수 고티켓</div>
-          <span class="pl-tag off">전업 후</span>
-        </div>
-      </div>
-      <div class="pl-item reveal d3">
-        <div class="pl-num">06</div>
-        <div>
-          <div class="pl-name" data-key="pl6n">B2B</div>
-          <div class="pl-desc" data-key="pl6d">광고·협찬 · 브랜드 파워 → 기업 계약</div>
-          <span class="pl-tag off">장기</span>
-        </div>
-      </div>
+      <div class="pl-row on"><div class="pl-n">01</div><div><div class="pl-nm" data-k="pl1n">챌린지</div><div class="pl-d" data-k="pl1d">사업 스타터 챌린지 · 얼리버드 4.9만 / 정가 5.9만 · 월 ~10명</div><span class="pl-tag on">운영 중</span></div></div>
+      <div class="pl-row"><div class="pl-n">02</div><div><div class="pl-nm" data-k="pl2n">멤버십</div><div class="pl-d" data-k="pl2d">Next CEO Club 멤버십 · 월 구독 기반 안정 수익</div><span class="pl-tag off">론칭 예정</span></div></div>
+      <div class="pl-row"><div class="pl-n">03</div><div><div class="pl-nm" data-k="pl3n">디지털 상품</div><div class="pl-d" data-k="pl3d">노션 템플릿 · PDF 워크북 · 24시간 판매되는 자산</div><span class="pl-tag off">개발 예정</span></div></div>
+      <div class="pl-row"><div class="pl-n">04</div><div><div class="pl-nm" data-k="pl4n">온라인 강의</div><div class="pl-d" data-k="pl4d">전업 전후 론칭 · 레버리지 최대화</div><span class="pl-tag off">전업 후</span></div></div>
+      <div class="pl-row"><div class="pl-n">05</div><div><div class="pl-nm" data-k="pl5n">고관여 1:1 세션</div><div class="pl-d" data-k="pl5d">프리미엄 컨설팅 · 소수 고티켓</div><span class="pl-tag off">전업 후</span></div></div>
+      <div class="pl-row"><div class="pl-n">06</div><div><div class="pl-nm" data-k="pl6n">B2B</div><div class="pl-d" data-k="pl6d">광고·협찬 · 브랜드 파워 → 기업 계약</div><span class="pl-tag off">장기</span></div></div>
     </div>
   </div>
 </section>
 
-<!-- WISDOM -->
-<section>
-  <div class="s-inner">
-    <div class="s-title reveal">계획을 지배하는 <span style="color:var(--red)">지혜의 축</span> 5</div>
+<!-- 지혜의 축 -->
+<section class="wis-sec">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="sec-tag anim">💡 지혜의 축</div>
     <div class="wis-grid">
-      <div class="wis-card reveal d1">
-        <div class="wis-num">AXIS 01</div>
-        <div class="wis-head" data-key="w1h">일상이 목적이다</div>
-        <div class="wis-body" data-key="w1b">일의 반대는 일상. 성공 = 일상의 주인이 되는 것. 스케줄을 꽉 채우지 않는다.</div>
-        <div class="wis-impact" data-key="w1i">→ 관계·수면·회복은 지킬 값</div>
-      </div>
-      <div class="wis-card reveal d2">
-        <div class="wis-num">AXIS 02</div>
-        <div class="wis-head" data-key="w2h">하나에 집중 (원씽)</div>
-        <div class="wis-body" data-key="w2b">다 하려다 다 놓친다. 저녁은 매일 딱 하나. 요일제 유지, 욕심 X.</div>
-        <div class="wis-impact" data-key="w2i">→ 오늘 내 원씽은 무엇인가</div>
-      </div>
-      <div class="wis-card reveal d3">
-        <div class="wis-num">AXIS 03</div>
-        <div class="wis-head" data-key="w3h">잠이 그릇을 만든다</div>
-        <div class="wis-body" data-key="w3b">일찍 자는 게 핵심. 밤 10시 이후 좋은 일 없음. 체력 = 그릇.</div>
-        <div class="wis-impact" data-key="w3i">→ 취침 사수가 1순위</div>
-      </div>
-      <div class="wis-card reveal d1">
-        <div class="wis-num">AXIS 04</div>
-        <div class="wis-head" data-key="w4h">누가 > 무엇</div>
-        <div class="wis-body" data-key="w4b">듣고 싶은 말·내 서사·매력. "팬이 너를 왜 좋아하는지 알면 뭘 팔지 안다."</div>
-        <div class="wis-impact" data-key="w4i">→ 정보 나열❌ 내 현실+분석+서사⭕</div>
-      </div>
-      <div class="wis-card reveal d2">
-        <div class="wis-num">AXIS 05</div>
-        <div class="wis-head" data-key="w5h">간절한 사람의 AI</div>
-        <div class="wis-body" data-key="w5b">정답은 무료, 비싼 건 문제·꿈. AI는 선생님/직원. 한 달을 1년처럼.</div>
-        <div class="wis-impact" data-key="w5i">→ AI를 매일의 레버리지로</div>
-      </div>
+      <div class="wis-card anim a1"><div class="wis-n">AXIS 01</div><div class="wis-h" data-k="w1h">일상이 목적이다</div><div class="wis-b" data-k="w1b">일의 반대는 일상. 성공 = 일상의 주인. 스케줄을 꽉 채우지 않는다.</div><div class="wis-i" data-k="w1i">→ 관계·수면·회복은 지킬 값</div></div>
+      <div class="wis-card anim a2"><div class="wis-n">AXIS 02</div><div class="wis-h" data-k="w2h">하나에 집중 (원씽)</div><div class="wis-b" data-k="w2b">다 하려다 다 놓친다. 저녁은 매일 딱 하나. 요일제 유지, 욕심 X.</div><div class="wis-i" data-k="w2i">→ 오늘 내 원씽은 무엇인가</div></div>
+      <div class="wis-card anim a3"><div class="wis-n">AXIS 03</div><div class="wis-h" data-k="w3h">잠이 그릇을 만든다</div><div class="wis-b" data-k="w3b">일찍 자는 게 핵심. 밤 10시 이후 좋은 일 없음. 체력 = 그릇.</div><div class="wis-i" data-k="w3i">→ 취침 사수가 1순위</div></div>
+      <div class="wis-card anim a1"><div class="wis-n">AXIS 04</div><div class="wis-h" data-k="w4h">누가 > 무엇</div><div class="wis-b" data-k="w4b">듣고 싶은 말·내 서사·매력. "팬이 너를 왜 좋아하는지 알면 뭘 팔지 안다."</div><div class="wis-i" data-k="w4i">→ 정보 나열❌ 내 현실+분석+서사⭕</div></div>
+      <div class="wis-card anim a2"><div class="wis-n">AXIS 05</div><div class="wis-h" data-k="w5h">간절한 사람의 AI</div><div class="wis-b" data-k="w5b">정답은 무료, 비싼 건 문제·꿈. AI는 선생님/직원. 한 달을 1년처럼.</div><div class="wis-i" data-k="w5i">→ AI를 매일의 레버리지로</div></div>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="footer-mission">나 변예지의 사명은 1인 사업으로 성공하고 싶은 2030에게<br>열정, 전략, 사랑을 바탕으로 <span>월천 버는 것</span>을 돕기 위해 존재한다.</div>
-  <div class="footer-meta">예사장 · @yeah_ceo · Vision Board · 2026–2031</div>
+  <div class="ft-m">나 변예지의 사명은 1인 사업으로 성공하고 싶은 2030에게<br>열정, 전략, 사랑을 바탕으로 <em>월천 버는 것</em>을 돕기 위해 존재한다.</div>
+  <div class="ft-sub">예사장 · @yeah_ceo · Vision Board · 2026–2031</div>
 </footer>
 
 <script>
-const WISDOM = [
-  {q:"무의미한 일은 없다. 진심이 복리로 쌓인다.",s:"드로우앤드류"},
-  {q:"잠이 그릇을 만든다. 밤 10시 이후 좋은 일은 없다.",s:"드로우앤드류"},
-  {q:"하고 싶은 말 말고, 듣고 싶은 말을 해라.",s:"유어셀린"},
-  {q:"누가 말하느냐가 무엇을 말하느냐보다 크다.",s:"유어셀린"},
-  {q:"팬이 너를 왜 좋아하는지 알면 뭘 팔지 안다.",s:"유어셀린"},
-  {q:"성공 = 일상의 주인이 되는 것.",s:"윤소정"},
-  {q:"정답은 무료다. 비싼 건 문제·결핍·꿈이다.",s:"김미경"},
-  {q:"AI는 선생님이다. 한 달을 1년처럼.",s:"윤소정"},
-  {q:"다름이 특별함이다.",s:"1인사업가"},
-  {q:"시작하고, 막히면 배워라.",s:"1인사업가"},
-  {q:"체력이 그릇이다.",s:"란"},
-  {q:"간절한 사람이 AI 시대를 이긴다.",s:"김미경"},
-  {q:"사게 하지 말고, 사고 싶게 하라.",s:"유어셀린"},
-  {q:"환경을 바꾸면 내가 바뀐다. 시간·공간·친구.",s:"란"},
-  {q:"두 번 성공하면 실력이다.",s:"란"},
-  {q:"나는 혼자가 아니다. 듀얼 브레인.",s:"김미경"},
-  {q:"취향이 브랜드다. 자기계발보다 취향 개발.",s:"김미경"},
-  {q:"독수리처럼 배워라. 필요한 것만 사냥한다.",s:"1인사업가"},
-  {q:"일상이 목적이다. 돈은 수단이다.",s:"윤소정"},
-  {q:"단조로움을 믿어라. 루틴이 나를 지킨다.",s:"윤소정"},
-  {q:"34살 예사장은 연 10억 CEO다. 지금 이 하루가 그 길이다.",s:"예사장 Vision"},
+// ── 스케줄 데이터 ──
+const SCH = [
+  {t:'05:20',      task:'기상 · 기도 5분',                           badge:''},
+  {t:'05:25–05:40',task:'근력 15분',                                 badge:'체력=그릇'},
+  {t:'05:40–06:25',task:'씻기·단장 (전날 세팅 → 결정피로↓)',           badge:''},
+  {t:'06:25–06:30',task:'오늘의 원씽 1개만 정함',                     badge:'②'},
+  {t:'06:30–07:30',task:'출근 — AI 선생님 활용 or 듣기 학습',          badge:'⑤'},
+  {t:'07:30–08:00',task:'회사 도착 — 비전·사명 3회 + 미래작업 30분',   badge:''},
+  {t:'08:00–17:00',task:'회사 = 훔쳐배우기 (리서치·기획·브랜딩)',       badge:''},
+  {t:'17:00–18:00',task:'퇴근 — 회복 70%',                           badge:'③'},
+  {t:'18:00–18:20',task:'경사길 20분 (유산소+회사모드 OFF)',            badge:'①'},
+  {t:'18:20–19:20',task:'샤워·저녁·정리',                             badge:''},
+  {t:'19:20–21:00',task:'원씽 딥워크 100분 (요일제)',                  badge:'②④⑤'},
+  {t:'21:00–21:40',task:'일상 — 관계·정리·내일 세팅',                  badge:'①'},
+  {t:'21:40–22:00',task:'하루 기록 5줄',                              badge:''},
+  {t:'22:00–22:30',task:'마감·기도·취침',                              badge:'③'},
 ];
 
-const MARQUEE = ["연매출 10억","월천 달성","직원 없이","일상의 주인","1인 사업 CEO","Next CEO Club","@yeah_ceo","메타인지","리더십","AI 레버리지","라이프스타일 기업","간절함이 무기다","서사가 브랜드다","34세 예사장"];
+const WD = [
+  {d:1,day:'MON',k:'wd1',task:'사업 구조·판매 행동'},
+  {d:2,day:'TUE',k:'wd2',task:'콘텐츠 제작 (현실+분석+서사)'},
+  {d:3,day:'WED',k:'wd3',task:'챌린지 운영·고객 응대'},
+  {d:4,day:'THU',k:'wd4',task:'학습·박사 인풋'},
+  {d:5,day:'FRI',k:'wd5',task:'재테크 점검+관계'},
+  {d:6,day:'SAT',k:'wd6',task:'릴스 촬영·편집·예약'},
+  {d:0,day:'SUN',k:'wd0',task:'예배·회고·원씽 정하기'},
+];
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadStorage();
-  ddayCounts();
-  dailyLine();
-  buildMarquee();
-  scrollReveal();
-  countups();
-  weekdayHL();
-  streak();
-});
+const WISDOM = [
+  {q:'무의미한 일은 없다. 진심이 복리로 쌓인다.',s:'드로우앤드류'},
+  {q:'잠이 그릇을 만든다. 밤 10시 이후 좋은 일은 없다.',s:'드로우앤드류'},
+  {q:'하고 싶은 말 말고, 듣고 싶은 말을 해라.',s:'유어셀린'},
+  {q:'누가 말하느냐가 무엇을 말하느냐보다 크다.',s:'유어셀린'},
+  {q:'팬이 너를 왜 좋아하는지 알면 뭘 팔지 안다.',s:'유어셀린'},
+  {q:'성공 = 일상의 주인이 되는 것.',s:'윤소정'},
+  {q:'정답은 무료다. 비싼 건 문제·결핍·꿈이다.',s:'김미경'},
+  {q:'AI는 선생님이다. 한 달을 1년처럼.',s:'윤소정'},
+  {q:'다름이 특별함이다.',s:'1인사업가'},
+  {q:'시작하고, 막히면 배워라.',s:'1인사업가'},
+  {q:'체력이 그릇이다.',s:'란'},
+  {q:'간절한 사람이 AI 시대를 이긴다.',s:'김미경'},
+  {q:'사게 하지 말고, 사고 싶게 하라.',s:'유어셀린'},
+  {q:'환경을 바꾸면 내가 바뀐다. 시간·공간·친구.',s:'란'},
+  {q:'두 번 성공하면 실력이다.',s:'란'},
+  {q:'취향이 브랜드다. 자기계발보다 취향 개발.',s:'김미경'},
+  {q:'독수리처럼 배워라. 필요한 것만 사냥한다.',s:'1인사업가'},
+  {q:'일상이 목적이다. 돈은 수단이다.',s:'윤소정'},
+  {q:'단조로움을 믿어라. 루틴이 나를 지킨다.',s:'윤소정'},
+  {q:'34살 예사장은 연 10억 CEO다. 지금 이 하루가 그 길이다.',s:'예사장 Vision'},
+];
 
+const MQ = ['연매출 10억','월천 달성','직원 없이','일상의 주인','1인 사업 CEO','Next CEO Club','@yeah_ceo','메타인지','리더십','AI 레버리지','라이프스타일 기업','간절함이 무기다','서사가 브랜드다','34세 예사장'];
+
+// ── 시간 파싱 ──
+function parseHour(s) {
+  // "05:20" → 5.33, "19:20–21:00" → 19.33
+  const m = s.match(/^(\d+):(\d+)/);
+  return m ? parseInt(m[1]) + parseInt(m[2])/60 : 0;
+}
+function parseEnd(s) {
+  const m = s.match(/–(\d+):(\d+)/);
+  return m ? parseInt(m[1]) + parseInt(m[2])/60 : parseHour(s) + 1;
+}
+
+// ── 현재 블록 찾기 ──
+function currentBlock(h) {
+  for (let i = 0; i < SCH.length; i++) {
+    const start = parseHour(SCH[i].t);
+    const end = i < SCH.length - 1 ? parseHour(SCH[i+1].t) : parseEnd(SCH[i].t);
+    if (h >= start && h < end) return i;
+  }
+  return -1;
+}
+
+// ── 스케줄 렌더 ──
+function renderRows(h) {
+  const cont = document.getElementById('rows');
+  const cur = currentBlock(h);
+  cont.innerHTML = SCH.map((s, i) => {
+    const state = i === cur ? 'active' : (parseHour(s.t) < h ? 'past' : '');
+    const b = s.badge ? `<span class="badge">${s.badge}</span>` : '';
+    return `<div class="row ${state}"><div class="t">${s.t}</div><div class="task" data-k="sch${i}">${s.task}${b}</div></div>`;
+  }).join('');
+  loadStorage(); // restore any edited content
+}
+
+// ── 지금 이 순간 ──
+function updateNow() {
+  const now = new Date();
+  const h = now.getHours() + now.getMinutes()/60;
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('nowClock').textContent = `${hh}:${mm}`;
+  const i = currentBlock(h);
+  const el = document.getElementById('nowTask');
+  if (i >= 0) {
+    const s = SCH[i];
+    el.innerHTML = `<em>${s.t}</em>&nbsp; ${s.task}`;
+  } else {
+    el.textContent = '오늘도 수고했어요 🌙';
+  }
+  renderRows(h);
+}
+
+// ── 요일 그리드 ──
+function renderWd() {
+  const today = new Date().getDay();
+  const g = document.getElementById('wdGrid');
+  g.innerHTML = WD.map(w => {
+    const saved = getSaved(w.k) || w.task;
+    return `<div class="wdc${w.d===today?' td':''}"><div class="wdn">${w.day}</div><div class="wdt" data-k="${w.k}">${saved}</div></div>`;
+  }).join('');
+}
+
+// ── D-DAY ──
 function ddayCounts() {
   const now = new Date();
-  [[dd1, '2027-12-31'],[dd2,'2028-07-01'],[dd3,'2031-01-01']].forEach(([id,d])=>{
+  [['dd1','2027-12-31'],['dd2','2028-07-01'],['dd3','2031-01-01']].forEach(([id,d])=>{
     const days = Math.ceil((new Date(d)-now)/86400000);
     document.getElementById(id).textContent = `D-${days.toLocaleString()}`;
   });
 }
 
+// ── 오늘의 한 줄 ──
 function dailyLine() {
   const now = new Date();
-  const doy = Math.floor((now - new Date(now.getFullYear(),0,0))/86400000);
+  const doy = Math.floor((now-new Date(now.getFullYear(),0,0))/86400000);
   const {q,s} = WISDOM[doy % WISDOM.length];
   const mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const dy=['SUN','MON','TUE','WED','THU','FRI','SAT'];
   document.getElementById('dDate').textContent=`${now.getFullYear()} · ${mo[now.getMonth()]} ${now.getDate()} · ${dy[now.getDay()]}`;
-  document.getElementById('dQuote').textContent=`"${q}"`;
-  document.getElementById('dSrc').textContent=`— ${s}`;
+  document.getElementById('dQ').textContent=`"${q}"`;
+  document.getElementById('dS').textContent=`— ${s}`;
 }
 
-function buildMarquee() {
-  const t = document.getElementById('mTrack');
-  const all = [...MARQUEE,...MARQUEE];
-  t.innerHTML = all.map(x=>`<span class="marquee-item">${x}<span class="marquee-dot">◆</span></span>`).join('');
+// ── 마퀴 ──
+function buildMq() {
+  const t = document.getElementById('mqT');
+  const all = [...MQ,...MQ];
+  t.innerHTML = all.map(x=>`<span class="mq-i">${x}<span class="mq-d">◆</span></span>`).join('');
 }
 
-function scrollReveal() {
-  const obs = new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:0.1});
-  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-}
-
+// ── 카운트업 ──
 function countups() {
-  const obs = new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){animCU(e.target);obs.unobserve(e.target);}});},{threshold:0.3});
-  document.querySelectorAll('.cu').forEach(el=>obs.observe(el));
-}
-
-function animCU(el) {
-  const target = parseInt(el.dataset.target,10);
-  const t0 = performance.now();
-  const dur = 1600;
-  (function step(now){
-    const p = Math.min((now-t0)/dur,1);
-    const e = 1-Math.pow(1-p,3);
-    el.textContent = Math.floor(e*target).toLocaleString('ko-KR');
-    if(p<1) requestAnimationFrame(step);
-    else el.textContent = target.toLocaleString('ko-KR');
-  })(t0);
-}
-
-function weekdayHL() {
-  const today = new Date().getDay();
-  document.querySelectorAll('#wdGrid .wd-card').forEach(c=>{
-    if(parseInt(c.dataset.d)===today) c.classList.add('today');
+  document.querySelectorAll('.cu').forEach(el=>{
+    const target = parseInt(el.dataset.t,10);
+    const t0 = performance.now();
+    const dur = 1400;
+    (function go(now){
+      const p = Math.min((now-t0)/dur,1);
+      const e = 1-Math.pow(1-p,3);
+      el.textContent = Math.floor(e*target).toLocaleString('ko-KR');
+      if(p<1) requestAnimationFrame(go);
+      else el.textContent = target.toLocaleString('ko-KR');
+    })(t0);
   });
 }
 
+// ── 스트릭 ──
 function streak() {
-  const key='yc_streak';
-  const today=new Date().toDateString();
+  const key='yc_streak', today=new Date().toDateString();
   const yest=new Date(); yest.setDate(yest.getDate()-1);
   let d=JSON.parse(localStorage.getItem(key)||'{"lv":"","n":0}');
   if(d.lv!==today){
@@ -552,57 +499,62 @@ function streak() {
     d.lv=today;
     localStorage.setItem(key,JSON.stringify(d));
   }
-  document.getElementById('streakNum').textContent=d.n;
+  document.getElementById('sNum').textContent=d.n;
 }
 
-// EDIT
-let editing=false;
-function toggleEdit(){
-  editing=!editing;
-  document.body.classList.toggle('edit-mode',editing);
-  const btn=document.getElementById('editBtn');
-  btn.textContent=editing?'✕ 취소':'✏️ 편집';
-  document.querySelectorAll('[data-key]').forEach(el=>{
-    el.contentEditable=editing?'true':'false';
-  });
-  if(!editing) loadStorage();
+// ── localStorage ──
+function getSaved(k){ try{const d=JSON.parse(localStorage.getItem('yc_v2')||'{}'); return d[k]||null;}catch{return null;} }
+function loadStorage(){
+  try{
+    const d=JSON.parse(localStorage.getItem('yc_v2')||'{}');
+    Object.entries(d).forEach(([k,v])=>{
+      document.querySelectorAll(`[data-k="${k}"]`).forEach(el=>{ el.innerHTML=v; });
+    });
+  }catch(e){}
 }
-
 function saveAll(){
   const out={};
-  document.querySelectorAll('[data-key]').forEach(el=>{
-    out[el.dataset.key]=el.innerHTML;
-  });
-  localStorage.setItem('yc_content',JSON.stringify(out));
+  document.querySelectorAll('[data-k]').forEach(el=>{ out[el.dataset.k]=el.innerHTML; });
+  localStorage.setItem('yc_v2',JSON.stringify(out));
   editing=false;
-  document.body.classList.remove('edit-mode');
-  document.getElementById('editBtn').textContent='✏️ 편집';
-  document.querySelectorAll('[data-key]').forEach(el=>el.contentEditable='false');
+  document.body.classList.remove('em');
+  document.getElementById('eBtn').textContent='✏️ 편집';
+  document.querySelectorAll('[data-k]').forEach(el=>el.removeAttribute('contenteditable'));
   toast('저장됐어요 ✓');
 }
 
-function loadStorage(){
-  const raw=localStorage.getItem('yc_content');
-  if(!raw)return;
-  const d=JSON.parse(raw);
-  Object.entries(d).forEach(([k,v])=>{
-    const el=document.querySelector(`[data-key="${k}"]`);
-    if(el)el.innerHTML=v;
+// ── 편집모드 ──
+let editing=false;
+function toggleEdit(){
+  editing=!editing;
+  document.body.classList.toggle('em',editing);
+  document.getElementById('eBtn').textContent=editing?'✕ 취소':'✏️ 편집';
+  document.querySelectorAll('[data-k]').forEach(el=>{
+    if(editing) el.contentEditable='true';
+    else { el.removeAttribute('contenteditable'); loadStorage(); }
   });
 }
 
+// ── 토스트 ──
 function toast(msg){
-  let t=document.getElementById('_toast');
-  if(!t){
-    t=document.createElement('div');
-    t.id='_toast';
-    Object.assign(t.style,{position:'fixed',bottom:'28px',left:'50%',transform:'translateX(-50%)',background:getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()||'#1A1B33',color:'#fff',padding:'12px 28px',borderRadius:'100px',fontFamily:'Pretendard,sans-serif',fontSize:'14px',fontWeight:'600',zIndex:'999',transition:'opacity 0.3s',opacity:'0',pointerEvents:'none',whiteSpace:'nowrap'});
-    document.body.appendChild(t);
-  }
-  t.textContent=msg;
-  t.style.opacity='1';
-  setTimeout(()=>t.style.opacity='0',2400);
+  let t=document.getElementById('_t');
+  if(!t){t=document.createElement('div');t.id='_t';Object.assign(t.style,{position:'fixed',bottom:'24px',left:'50%',transform:'translateX(-50%)',background:'#1A1B33',color:'#fff',padding:'11px 24px',borderRadius:'100px',fontSize:'13px',fontWeight:'600',zIndex:'999',transition:'opacity .3s',opacity:'0',pointerEvents:'none',whiteSpace:'nowrap'});document.body.appendChild(t);}
+  t.textContent=msg; t.style.opacity='1';
+  clearTimeout(t._to); t._to=setTimeout(()=>t.style.opacity='0',2200);
 }
+
+// ── INIT ──
+(function init(){
+  updateNow();
+  setInterval(updateNow, 60000); // 매분 갱신
+  renderWd();
+  ddayCounts();
+  dailyLine();
+  buildMq();
+  countups();
+  streak();
+  loadStorage();
+})();
 </script>
 </body>
 </html>
